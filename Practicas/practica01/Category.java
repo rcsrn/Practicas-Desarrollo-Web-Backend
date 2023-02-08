@@ -5,15 +5,17 @@ public class Category {
     private Integer category_id;
     private String category;
     private String acronym;
-    private LinkedList<Categories> categories;
+    private static LinkedList<Categories> categories;
     
 
-    public Category() {
-	
+    public Category(Integer category_id, String category, String acronym) {
+	this.category_id = category_id;
+	this.category = category;
+	this.acronym;
     }
     
     public static void createCategory(Category categ) {
-        
+       
     }
 
     public static String getCategories() {
