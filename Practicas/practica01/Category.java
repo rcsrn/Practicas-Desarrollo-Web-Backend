@@ -3,7 +3,7 @@ import java.util.NoSuchElementException;
 import java.lang.IllegalArgumentException;
 
 public class Category {
-
+    
     private Integer category_id;
     private String category;
     private String acronym;
@@ -17,7 +17,7 @@ public class Category {
     
     public static void createCategory(Category newCategory) {
 	for (Category category : categories)
-	    if (category.category_id.intValue() == category.category_id.intValue())
+	    if (category.category_id.intValue() == newCategory.category_id.intValue())
 		throw new IllegalArgumentException();
 	categories.addLast(newCategory);
     }
@@ -39,9 +39,14 @@ public class Category {
     
     public static void deleteCategory(Integer category_id) {
 	for (Category category : categories)
-	    if (category.category_id.intValue() == category_id.intValue())
+	    if (category.category_id.intValue() == category_id.intValue()) {
 		categories.remove(category);
+		return;
+	    }
 	throw new NoSuchElementException();
     }
-    
+
+    @Override public String toString() {
+	return "{" + category_id + ", " + category + ", " + acronym +"}";
+    }
 }
