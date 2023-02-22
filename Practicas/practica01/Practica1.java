@@ -24,20 +24,30 @@ public class Practica1 {
 	Scanner scan  = new Scanner(System.in);
 	
 	System.out.println("Ingrese el id.");
-	Integer categoryId = scan.nextInt();
 
-	scan = new Scanner(System.in);
-	
-	System.out.println("Ingrese la categoria.");
-	String category = scan.nextLine();
-	
-	System.out.println("Ingrese el acronimo.");
-	String acronym = scan.nextLine();
-	
 	try {
-	    Category.createCategory(new Category(categoryId, category, acronym));
-	} catch (IllegalArgumentException iae) {
-	    System.out.println("El id de la categoria ingresado ya existe.");
+	    Integer categoryId = scan.nextInt();
+
+	    scan = new Scanner(System.in);
+	
+	    System.out.println("Ingrese la categoria.");
+	    String category = scan.nextLine();
+
+	    while (category.equals("")) {
+		category = scan.nextLine();
+	    }
+	
+	    System.out.println("Ingrese el acronimo.");
+	    String acronym = scan.nextLine();
+	
+	    try {
+		Category.createCategory(new Category(categoryId, category, acronym));
+	    } catch (IllegalArgumentException iae) {
+		System.out.println("El id de la categoria ingresado ya existe.");
+	    }
+	    
+	} catch (Exception e) {
+	    use();
 	}
     }
 
@@ -87,7 +97,13 @@ public class Practica1 {
 	reader = new Scanner(System.in);
 	showInstructions();
 	while (true) {
-	    handleAction(reader.nextInt());
+	    try {
+	    Integer option = reader.nextInt();
+	    handleAction(option);
+	    } catch (Exception e) {
+	        System.out.println("Opcion invalida.");
+		System.exit(1);
+	    }
 	}
     }   
 }
