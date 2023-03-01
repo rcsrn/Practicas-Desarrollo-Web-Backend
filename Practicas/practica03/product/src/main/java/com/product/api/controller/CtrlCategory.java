@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
 import com.product.api.entity.Category;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 @RestController
 @RequestMapping("/category")
@@ -38,7 +36,7 @@ public class CtrlCategory {
           category2.setAcronym("Electr");
           category2.setStatus(2);
 
-          List categories = new ArrayList();
+          List<Category> categories = new ArrayList<Category>();
           categories.add(category1);
           categories.add(category2);
 
