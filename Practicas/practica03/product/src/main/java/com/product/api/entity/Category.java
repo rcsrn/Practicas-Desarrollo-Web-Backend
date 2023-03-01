@@ -66,4 +66,9 @@ public class Category {
     public Integer getStatus() {
         return status;
     }
+
+    @Override public String toString() {
+        return "Category [category_id=" + category_id + ", category=" + 
+        category + ", acronym=" + acronym + ", status=" + status + "]";
+    }
 }
