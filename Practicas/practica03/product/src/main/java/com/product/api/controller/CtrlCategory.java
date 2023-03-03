@@ -23,7 +23,7 @@ import com.product.api.entity.Category;
 public class CtrlCategory {
 
      @GetMapping
-     public ResponseEntity<List<Category>> getRegions() {
+     public ResponseEntity<List<Category>> getCategories() {
           Category category1 = new Category();
           category1.setCategoryId(1);
           category1.setCategory("Línea Blanca");
