@@ -105,8 +105,11 @@ public class CtrlCategory {
      @DeleteMapping("/{category_id}")
      public ResponseEntity<String> deleteCategory(@PathVariable int category_id) {
           String message = "";
+
+          if (category_id == 1 || category_id == 2) {
+               return new ResponseEntity<>("category removed", HttpStatus.OK);     
+          }
           
-          message = "category removed";
-          return new ResponseEntity<>(message, HttpStatus.OK);
+          return new ResponseEntity<>("category does not exist", HttpStatus.OK);
      }
 } 
