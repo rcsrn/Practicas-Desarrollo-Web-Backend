@@ -10,6 +10,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "category")
 public class Category {
@@ -30,6 +32,7 @@ public class Category {
     @Column(name = "status")
     @Min(value = 0, message = "status must be 0 or 1")
     @Max(value = 1, message = "status must be 0 or 1")
+    @JsonIgnore
     private Integer status;
 
 
