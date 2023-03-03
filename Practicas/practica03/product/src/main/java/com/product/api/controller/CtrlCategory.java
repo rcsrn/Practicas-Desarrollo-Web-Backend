@@ -94,8 +94,12 @@ public class CtrlCategory {
                message = bindingResult.getAllErrors().get(0).getDefaultMessage();
                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
           }
-          message = "category updated";
-          return new ResponseEntity<>(message, HttpStatus.OK);
+
+          if (category_id == 1 || category_id == 2) {
+               return new ResponseEntity<>("category updated", HttpStatus.OK);     
+          }
+           
+          return new ResponseEntity<>("category does not exist", HttpStatus.OK);
      }
      
      @DeleteMapping("/{category_id}")
