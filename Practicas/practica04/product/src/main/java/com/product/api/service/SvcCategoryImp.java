@@ -57,6 +57,11 @@ public class SvcCategoryImp implements SvcCategory {
     }
 
     @Override public String deleteCategory(Integer category_id) {
-        return null;
+        Category categorySaved = repo.findByCategoryId(category_id);
+        if (categorySaved != null) {
+            repo.deleteById(category_id);
+            return "category removed";
+        }
+        return "category does not exist";
     }
 }
