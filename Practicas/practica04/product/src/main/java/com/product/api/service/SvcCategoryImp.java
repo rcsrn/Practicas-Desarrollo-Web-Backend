@@ -35,7 +35,25 @@ public class SvcCategoryImp implements SvcCategory {
     }
 
     @Override public String updateCategory(Integer category_id, Category category) {
-        return null;
+        Category categorySaved = repo.findByCategoryId(category_id);
+
+        if (categorySaved != null) {
+            if (categorySaved.getCategoryId() != 0) {
+                
+                categorySaved = (Category) repo.findByCategory(category.getCategory());
+                if (categorySaved != null) {
+                    return "category already exists";
+                }
+
+                repo.updateCategory(category_id, category.getCategory(), category.getAcronym());
+                return "category updated";
+
+            } else {
+                return "category is not active";
+            } 
+        } else {
+            return "category does not exist";
+        }
     }
 
     @Override public String deleteCategory(Integer category_id) {
