@@ -20,17 +20,19 @@ public interface RepoCategory extends JpaRepository<Category, Integer>{
     List<Category> findByStatus(@Param("status") Integer status);
 
     @Query(value = "SELECT * FROM category WHERE category = :category", nativeQuery = true)
-    List<Category> findByCategory(@Param("category") String category);    
+    Category findByCategory(@Param("category") String category);    
 
     @Query(value = "SELECT * FROM category WHERE category_id = :category_id AND status = 1", nativeQuery = true)
     Category findByCategoryId(@Param("category_id") Integer caregory_id);    
 
+    @Modifying
+    @Transactional
     @Query(value = "INSERT INTO category (category, acronym, status) VALUES (:category, :acronym, 1)", nativeQuery = true)
-    Category createCategory(@Param("category") String category, @Param("acronym") String acronym);    
+    void createCategory(@Param("category") String category, @Param("acronym") String acronym);    
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE category SET (category, acronym) = (:category, :acronym) WHERE category_id = :category_id", nativeQuery = true)
+    @Query(value = "UPDATE category SET category = :category, acronym = :acronym WHERE category_id = :category_id", nativeQuery = true)
     Integer updateCategory(@Param("category_id") Integer category_id, @Param("category") String category, 
     @Param("acronym") String acronym);    
     
