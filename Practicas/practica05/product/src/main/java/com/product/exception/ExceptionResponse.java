@@ -4,7 +4,10 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ExceptionResponse {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh-mm-ss")
     private LocalDateTime timestamp;
     private Integer status;
     private HttpStatus error;
