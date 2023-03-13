@@ -34,7 +34,7 @@ public class ExceptionResponse {
         this.error = error;
     }
 
-    public HttpStatus geHttpStatus() {
+    public HttpStatus getError() {
         return error;
     }
     
