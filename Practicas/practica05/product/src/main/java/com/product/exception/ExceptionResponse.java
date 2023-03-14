@@ -18,7 +18,7 @@ public class ExceptionResponse {
         this.timestamp = timestamp;
     }
 
-    public LocalDateTime getTimeStamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
