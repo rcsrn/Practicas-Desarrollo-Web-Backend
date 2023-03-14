@@ -43,7 +43,7 @@ public class SvcCategoryImp implements SvcCategory {
         return new ApiResponse("category created");
     }
 
-    @Override public String updateCategory(Integer category_id, Category category) {
+    @Override public ApiResponse updateCategory(Integer category_id, Category category) {
         Category categorySaved = repo.findByCategoryId(category_id);
 
         if (categorySaved != null) {
@@ -51,26 +51,28 @@ public class SvcCategoryImp implements SvcCategory {
                 
                 categorySaved = (Category) repo.findByCategory(category.getCategory());
                 if (categorySaved != null) {
-                    return "category already exists";
+                    throw new ApiException(HttpStatus.BAD_REQUEST, "category already exists");
                 }
 
                 repo.updateCategory(category_id, category.getCategory(), category.getAcronym());
-                return "category updated";
+                return new ApiResponse("category updated");
 
             } else {
-                return "category is not active";
+                throw new ApiException(HttpStatus.BAD_REQUEST, "category is not active");
             } 
         } else {
-            return "category does not exist";
+            throw new ApiException(HttpStatus.BAD_REQUEST, "category does not exist");
         }
     }
 
-    @Override public String deleteCategory(Integer category_id) {
+    @Override public ApiResponse deleteCategory(Integer category_id) {
         Category categorySaved = repo.findByCategoryId(category_id);
-        if (categorySaved != null) {
-            repo.deleteById(category_id);
-            return "category removed";
+
+        if (categorySaved == null) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "category does not exist");
         }
-        return "category does not exist";
+        
+        repo.deleteById(category_id);
+        return new ApiResponse("category removed");    
     }
 }
