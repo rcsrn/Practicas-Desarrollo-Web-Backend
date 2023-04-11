@@ -1,18 +1,18 @@
 package com.exchangerate.api.dto;
 
-public class ApiResponse {
-    private String message;
+public class ApiResponse{
+    public Data data;
+    public long timestamp;
 
-public ApiResponse(String message) {
-    this.message = message;
-}           
+    public class Data{
+        public String id;
+        public String symbol;
+        public String currencySymbol;
+        public String type;
+        public String rateUsd;
+    }
 
-public String getMessage() {
-    return message;
-}
-
-public void setMessage(String message) {
-    this.message = message;
-}
-
+    @Override public String toString() {
+        return "{ \"rate\":" + data.rateUsd + " }";
+    }
 }
