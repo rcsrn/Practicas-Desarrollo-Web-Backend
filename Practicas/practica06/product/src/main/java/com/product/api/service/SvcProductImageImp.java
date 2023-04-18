@@ -28,7 +28,7 @@ public class SvcProductImageImp implements SvcProductImage {
                 throw new ApiException(HttpStatus.BAD_REQUEST, "product image can not be created");
             }
         }
-        repo.createProductImage(in.getProductImageId(), in.getImage());
+        repo.createProductImage(in.getProductId(), in.getImage());
         return new ApiResponse("product image created");
     }
     
