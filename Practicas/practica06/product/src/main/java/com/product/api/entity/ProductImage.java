@@ -1,10 +1,13 @@
 package com.product.api.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -17,9 +20,9 @@ public class ProductImage {
     @Column(name = "product_image_id")
     private Integer product_image_id;   
 
-    @NotNull
-    @Column(name = "product_id")
-    private Integer product_id;
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "product_id")
+    private Product product;
     
     @NotNull
     @Column(name = "image")

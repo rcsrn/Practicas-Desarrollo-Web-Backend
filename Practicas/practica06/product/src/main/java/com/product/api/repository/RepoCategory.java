@@ -2,7 +2,6 @@ package com.product.api.repository;
 
 import java.util.List;
 
-/* Maybe it should be the other one */
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
