@@ -17,10 +17,10 @@ public class SvcProductImageImp implements SvcProductImage {
 
     @Override
     public ApiResponse setProductImage(ProductImage in) {
-        ProductImage imageSaved = repo.findByProductImage(in);
+        ProductImage imageSaved = repo.findByProductImageId(in.getProductImageId());
         if (imageSaved != null) {
             if (imageSaved.getStatus() == 0) {
-                repo.activateProduct();
+                repo.activateProductImage(in.getStatus());
                 return new ApiResponse("product image created");
             } else {
                 throw new ApiException(HttpStatus.BAD_REQUEST, "product image can not be created");
