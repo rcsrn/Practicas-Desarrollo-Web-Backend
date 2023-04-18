@@ -45,11 +45,11 @@ public class ProductImage {
     }
 
     public void setProductId(Integer product_id) {
-        this.product_id = product_id;
+        product.setProduct_id(product_id);
     }
 
     public Integer getProductId() {
-        return product_id;
+        return product.getProduct_id();
     }
 
     public void setImage(String image) {

@@ -1,5 +1,7 @@
 package com.product.api.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,7 @@ public class SvcProductImp implements SvcProduct {
 	public Product getProduct(String gtin) {
 		Product product = null; // sustituir null por la llamada al método implementado en el repositorio
 		if (product != null) {
-			product.setCategory(repoCategory.getCategory(product.getCategory_id()));
+			product.setCategory(repoCategory.findByCategoryId(product.getCategory_id()));
 			return product;
 		}else
 			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
