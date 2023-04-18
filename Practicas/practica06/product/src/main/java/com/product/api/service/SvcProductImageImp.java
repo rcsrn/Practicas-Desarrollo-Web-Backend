@@ -34,6 +34,15 @@ public class SvcProductImageImp implements SvcProductImage {
     
 
     public List<ProductImage> getProductImages(Integer product_id) {
-        return null;
+        return repo.findImagesFromProduct(product_id);
+    }
+
+    public ApiResponse deleteProductImage(Integer product_image_id) {
+        ProductImage imageSaved = repo.findByProductImageId(product_image_id);
+        if (imageSaved == null) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "product image cannot be deleted");
+        }
+        repo.deleteImage(product_image_id);
+        return new ApiResponse("product image removed");
     }
 }
