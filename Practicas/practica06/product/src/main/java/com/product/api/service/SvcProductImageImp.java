@@ -1,5 +1,7 @@
 package com.product.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public class SvcProductImageImp implements SvcProductImage {
     RepoProductImage repo;
 
     @Override
-    public ApiResponse setProductImage(ProductImage in) {
+    public ApiResponse createProductImage(ProductImage in) {
         ProductImage imageSaved = repo.findByProductImageId(in.getProductImageId());
         if (imageSaved != null) {
             if (imageSaved.getStatus() == 0) {
@@ -28,5 +30,10 @@ public class SvcProductImageImp implements SvcProductImage {
         }
         repo.createProductImage(in.getProductImageId(), in.getImage());
         return new ApiResponse("product image created");
+    }
+    
+
+    public List<ProductImage> getProductImages(Integer product_id) {
+        return null;
     }
 }

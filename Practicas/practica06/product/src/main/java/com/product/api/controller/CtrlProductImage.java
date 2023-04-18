@@ -1,5 +1,7 @@
 package com.product.api.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,8 @@ public class CtrlProductImage {
     SvcProductImage svc;
 
     @GetMapping("/{product_id}")
-    public ResponseEntity<ProductImage> getProductImage(@PathVariable int product_id) {
-        return null;
+    public ResponseEntity<List<ProductImage>> getProductImages(@PathVariable int product_id) {
+        return new ResponseEntity<>(svc.getProductImages(product_id), HttpStatus.OK);
     }    
 
     @PostMapping
@@ -36,7 +38,7 @@ public class CtrlProductImage {
         if (bindingResult.hasErrors()) {
             throw new ApiException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
-        return new ResponseEntity<ApiResponse>(svc.setProductImage(in), HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>(svc.createProductImage(in), HttpStatus.OK);
     }
 
     @DeleteMapping("{product_image_id}")
