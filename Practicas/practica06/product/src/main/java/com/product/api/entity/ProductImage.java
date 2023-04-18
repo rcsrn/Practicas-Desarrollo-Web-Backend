@@ -9,7 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "product image")
@@ -28,8 +32,10 @@ public class ProductImage {
     @Column(name = "image")
     private String image;
 
-    @NotNull
     @Column(name = "status")
+    @Min(value = 0, message = "status must be 0 or 1")
+    @Max(value = 1, message = "status must be 0 or 1")
+    @JsonIgnore
     private Integer status;
 
     public ProductImage() {
