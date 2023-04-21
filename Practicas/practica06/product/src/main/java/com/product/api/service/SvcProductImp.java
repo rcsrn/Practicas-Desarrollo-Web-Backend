@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.repository.RepoCategory;
 import com.product.api.repository.RepoProduct;
@@ -41,8 +42,31 @@ public class SvcProductImp implements SvcProduct {
 	 */
 	@Override
 	public ApiResponse createProduct(Product in) {
-		return null;
-	}
+		Category categorySaved = repoCategory.findByCategoryId(in.getCategory_id());
+		if (categorySaved == null) {
+			throw new ApiException(HttpStatus.NOT_FOUND, "category not found");
+		}
+
+		Product productSaved = repo.findByGtin(in.getGtin());
+
+		if (productSaved != null) {
+			if (productSaved.getProduct() == in.getProduct()) {
+				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");	
+			}
+
+			if (productSaved.getStatus() == 1) {
+				throw new ApiException(HttpStatus.BAD_REQUEST, "product gtin already exist");	
+			} else {
+				repo.activateProduct(productSaved.getProduct_id());
+				repo.updateProduct(productSaved.getProduct_id(), in.getGtin(), in.getProduct(), in.getDescription(), in.getPrice(), in.getStock(), in.getCategory_id());
+				return new ApiResponse("product activated");
+			}
+		} 
+
+		repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock());
+		return new ApiResponse("product created");
+		
+		}
 
 	@Override
 	public ApiResponse updateProduct(Product in, Integer id) {

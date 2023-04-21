@@ -8,13 +8,36 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.product.api.dto.ApiResponse;
 import com.product.api.entity.Product;
 
 @Repository
 public interface RepoProduct extends JpaRepository<Product, Integer>{
 	
 	// 3. Implementar la firma de un método que permita consultar un producto por su código GTIN y con estatus 1
-	
+	@Transactional
+	@Query(value = "SELECT * from product WHERE gtin = :gtin AND status = 1", nativeQuery = true)
+	Product findByGtinAndStatus(@Param("gtin") String gtin);
+	// --------------------------------------------
+
+	@Transactional
+	@Query(value = "SELECT * from product WHERE gtin = :gtin", nativeQuery = true)
+	Product findByGtin(@Param("gtin") String gtin);
+
+	@Transactional
+	@Query(value = "UPDATE product SET status = 1 WHERE product_id = :product_id", nativeQuery = true)
+	Product activateProduct(@Param("product_id") Integer product_id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "INSERT INTO product (gtin, product, price, description, stock) VALUES (:gtin, :product, :price, :description, :stock)", nativeQuery = true)
+	ApiResponse createProduct(
+			@Param("gtin") String gtin, 
+			@Param("product") String product, 
+			@Param("price") Double price,
+			@Param("description") String description, 
+			@Param("stock") Integer stock);
+
 	@Modifying
 	@Transactional
 	@Query(value ="UPDATE product "
