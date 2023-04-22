@@ -34,13 +34,14 @@ public interface RepoProduct extends JpaRepository<Product, Integer>{
 
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO product (gtin, product, price, description, stock) VALUES (:gtin, :product, :price, :description, :stock)", nativeQuery = true)
-	ApiResponse createProduct(
+	@Query(value = "INSERT INTO product (gtin, product, price, description, stock, category_id, status) VALUES (:gtin, :product, :price, :description, :stock, :category_id, 1)", nativeQuery = true)
+	void createProduct(
 			@Param("gtin") String gtin, 
 			@Param("product") String product, 
 			@Param("price") Double price,
 			@Param("description") String description, 
-			@Param("stock") Integer stock);
+			@Param("stock") Integer stock,
+			@Param("category_id") Integer category_id);
 
 	@Modifying
 	@Transactional

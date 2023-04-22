@@ -32,7 +32,6 @@ public class CtrlProduct {
 	public ResponseEntity<Product> getProduct(@PathVariable("gtin") String gtin) {
 		return new ResponseEntity<Product>(svc.getProduct(gtin), HttpStatus.OK);
 	}	
-
 	
 	@PostMapping
 	public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody Product in, BindingResult bindingResult){
