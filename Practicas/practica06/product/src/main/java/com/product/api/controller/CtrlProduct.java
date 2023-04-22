@@ -28,7 +28,10 @@ public class CtrlProduct {
 	SvcProduct svc;
 	
 	// 1. Implementar método getProduct
-	
+	@GetMapping("/{gtin}")
+	public ResponseEntity<Product> getProduct(@PathVariable("gtin") String gtin) {
+		return new ResponseEntity<Product>(svc.getProduct(gtin), HttpStatus.OK);
+	}	
 
 	
 	@PostMapping

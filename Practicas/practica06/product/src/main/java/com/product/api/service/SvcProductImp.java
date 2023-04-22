@@ -25,7 +25,7 @@ public class SvcProductImp implements SvcProduct {
 
 	@Override
 	public Product getProduct(String gtin) {
-		Product product = null; // sustituir null por la llamada al método implementado en el repositorio
+		Product product = repo.findByGtinAndStatus(gtin); // sustituir null por la llamada al método implementado en el repositorio
 		if (product != null) {
 			product.setCategory(repoCategory.findByCategoryId(product.getCategory_id()));
 			return product;
