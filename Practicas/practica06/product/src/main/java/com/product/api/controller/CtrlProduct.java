@@ -49,6 +49,11 @@ public class CtrlProduct {
 	}
 	
 	// 2. Implementar método updateProductStock
+	@PutMapping("/ {gtin}/stock/{stock}")
+	public ResponseEntity<ApiResponse> updateProductStock(@PathVariable("gtin") String gtin, @PathVariable("stock") Integer stock) {
+		return new ResponseEntity<>(svc.updateProductStock(gtin, stock), HttpStatus.OK);
+	}
+
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse> deleteProduct(@PathVariable("id") Integer id){
