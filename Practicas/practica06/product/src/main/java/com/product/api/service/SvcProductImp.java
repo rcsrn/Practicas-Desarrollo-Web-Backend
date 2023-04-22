@@ -63,6 +63,13 @@ public class SvcProductImp implements SvcProduct {
 			}
 		} 
 
+		productSaved = repo.findByProduct(in.getProduct());
+		if (productSaved != null) {
+			if (productSaved.getProduct() == in.getProduct()) {
+				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");	
+			}
+		}
+
 		repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock());
 		return new ApiResponse("product created");
 		

@@ -21,12 +21,16 @@ public interface RepoProduct extends JpaRepository<Product, Integer>{
 	// --------------------------------------------
 
 	@Transactional
-	@Query(value = "SELECT * from product WHERE gtin = :gtin", nativeQuery = true)
+	@Query(value = "SELECT * FROM product WHERE gtin = :gtin", nativeQuery = true)
 	Product findByGtin(@Param("gtin") String gtin);
 
 	@Transactional
 	@Query(value = "UPDATE product SET status = 1 WHERE product_id = :product_id", nativeQuery = true)
 	Product activateProduct(@Param("product_id") Integer product_id);
+
+	@Transactional
+	@Query(value = "SELECT * FROM product WHERE product = :product", nativeQuery = true)
+	Product findByProduct(@Param("product") String product);
 
 	@Modifying
 	@Transactional

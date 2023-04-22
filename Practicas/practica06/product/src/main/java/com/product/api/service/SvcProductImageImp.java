@@ -31,7 +31,6 @@ public class SvcProductImageImp implements SvcProductImage {
         repo.createProductImage(in.getProductId(), in.getImage());
         return new ApiResponse("product image created");
     }
-    
 
     public List<ProductImage> getProductImages(Integer product_id) {
         return repo.findImagesFromProduct(product_id);
