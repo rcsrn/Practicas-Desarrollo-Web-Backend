@@ -101,18 +101,18 @@ public class SvcProductImp implements SvcProduct {
 	}
 
 	@Override public ApiResponse updateProductCategory(String gtin, Integer category_id) {
-		Product product = repo.findByGtin(gtin);
-		if (product != null) {
+		Product product = repo.findByGtinAndStatus(gtin);
+		if (product == null) {
 			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
 		}
 
 		Category category = repoCategory.findByCategoryId(category_id);
 
-		if (category != null) {
-			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
+		if (category == null) {
+			throw new ApiException(HttpStatus.NOT_FOUND, "category not found");
 		}
 
-		repo.updateProductCategory(gtin, category_id);
+		repo.updateProductCategory(gtin, category.getCategoryId());
 		return new ApiResponse("product category updated");
 
 	}

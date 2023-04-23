@@ -1,5 +1,7 @@
 package com.product.api.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.service.SvcProduct;
 import com.product.exception.ApiException;
@@ -59,8 +62,14 @@ public class CtrlProduct {
 	}
 
 	@PutMapping("/{gtin}/category")
-	public ResponseEntity<ApiResponse> updateProductCategory(@PathVariable("gtin") String gtin) {
-		return new ResponseEntity<ApiResponse>(svc.updateProductCategory(gtin), HttpStatus.OK);
+	public ResponseEntity<ApiResponse> updateProductCategory(@PathVariable("gtin") String gtin, @RequestBody Map<String, Integer> json) {
+		if (json.size() != 1 || !json.containsKey("category_id")) {
+			throw new ApiException(HttpStatus.BAD_REQUEST, "invalid request");
+		}
+
+
+
+		return new ResponseEntity<ApiResponse>(svc.updateProductCategory(gtin, json.get("category_id")), HttpStatus.OK);
 	}
 }
 

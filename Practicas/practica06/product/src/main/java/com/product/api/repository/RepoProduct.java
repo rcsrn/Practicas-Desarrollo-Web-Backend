@@ -34,7 +34,7 @@ public interface RepoProduct extends JpaRepository<Product, Integer>{
 
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO product (category_id) VALUES (:category_id) WHERE gtin = :gtin", nativeQuery = true)
+	@Query(value = "UPDATE product SET category_id = :category_id WHERE gtin = :gtin", nativeQuery = true)
 	void updateProductCategory(@Param("gtin") String gtin, @Param("category_id") Integer category_id);
 
 	@Modifying
