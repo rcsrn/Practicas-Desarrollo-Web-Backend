@@ -43,8 +43,7 @@ public class SvcProductImp implements SvcProduct {
 	@Override
 	public ApiResponse createProduct(Product in) {
 		Category categorySaved = repoCategory.findByCategoryId(in.getCategory_id());
-		System.out.println(in.getCategory_id());
-		System.out.println(categorySaved == null);
+		
 		if (categorySaved == null) {
 			throw new ApiException(HttpStatus.NOT_FOUND, "category not found");
 		}
@@ -65,16 +64,17 @@ public class SvcProductImp implements SvcProduct {
 			}
 		} 
 
+	
 		productSaved = repo.findByProduct(in.getProduct());
 		if (productSaved != null) {
-			if (productSaved.getProduct() == in.getProduct()) {
+			if (productSaved.getProduct().equals(in.getProduct())) {
 				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");	
 			}
 		}
-
-		repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock(), in.getCategory_id());
-		return new ApiResponse("product created");
 		
+		repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock(), in.getCategory_id());
+
+		return new ApiResponse("product created");	
 		}
 
 	@Override
