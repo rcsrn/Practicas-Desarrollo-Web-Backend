@@ -42,40 +42,48 @@ public class SvcProductImp implements SvcProduct {
 	 */
 	@Override
 	public ApiResponse createProduct(Product in) {
-		Category categorySaved = repoCategory.findByCategoryId(in.getCategory_id());
-		
-		if (categorySaved == null) {
-			throw new ApiException(HttpStatus.NOT_FOUND, "category not found");
+		try {
+			repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock(), in.getCategory_id());		
+		}catch (DataIntegrityViolationException e) {
+			if (e.getLocalizedMessage().contains("gtin")) {
+				Product productSaved = repo.findByGtin(in.getGtin());
+					if (productSaved.getStatus() == 1) {
+						throw new ApiException(HttpStatus.BAD_REQUEST, "product gtin already exist");	
+					} else {
+						repo.activateProduct(productSaved.getProduct_id());
+						repo.updateProduct(productSaved.getProduct_id(), in.getGtin(), in.getProduct(), in.getDescription(), in.getPrice(), in.getStock(), in.getCategory_id());
+						return new ApiResponse("product activated");
+					}
+				}
+			if (e.getLocalizedMessage().contains("product"))
+				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");
+			if (e.contains(SQLIntegrityConstraintViolationException.class))
+				throw new ApiException(HttpStatus.BAD_REQUEST, "category not found");
+		}
+		return new ApiResponse("product created");
 		}
 
-		Product productSaved = repo.findByGtin(in.getGtin());
-
-		if (productSaved != null) {
-			if (productSaved.getProduct() == in.getProduct()) {
-				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");	
-			}
-
-			if (productSaved.getStatus() == 1) {
-				throw new ApiException(HttpStatus.BAD_REQUEST, "product gtin already exist");	
-			} else {
-				repo.activateProduct(productSaved.getProduct_id());
-				repo.updateProduct(productSaved.getProduct_id(), in.getGtin(), in.getProduct(), in.getDescription(), in.getPrice(), in.getStock(), in.getCategory_id());
-				return new ApiResponse("product activated");
-			}
-		} 
-
-	
-		productSaved = repo.findByProduct(in.getProduct());
-		if (productSaved != null) {
-			if (productSaved.getProduct().equals(in.getProduct())) {
-				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");	
-			}
+	public ApiResponse createProduct2(Product in) {
+		try {
+			repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock(), in.getCategory_id());		
+		}catch (DataIntegrityViolationException e) {
+			if (e.getLocalizedMessage().contains("gtin")) {
+				Product productSaved = repo.findByGtin(in.getGtin());
+					if (productSaved.getStatus() == 1) {
+						throw new ApiException(HttpStatus.BAD_REQUEST, "product gtin already exist");	
+					} else {
+						repo.activateProduct(productSaved.getProduct_id());
+						repo.updateProduct(productSaved.getProduct_id(), in.getGtin(), in.getProduct(), in.getDescription(), in.getPrice(), in.getStock(), in.getCategory_id());
+						return new ApiResponse("product activated");
+					}
+				}
+			if (e.getLocalizedMessage().contains("product"))
+				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");
+			if (e.contains(SQLIntegrityConstraintViolationException.class))
+				throw new ApiException(HttpStatus.BAD_REQUEST, "category not found");
 		}
-		
-		repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock(), in.getCategory_id());
-
-		return new ApiResponse("product created");	
-		}
+		return new ApiResponse("product updated");
+	}
 
 	@Override
 	public ApiResponse updateProduct(Product in, Integer id) {
