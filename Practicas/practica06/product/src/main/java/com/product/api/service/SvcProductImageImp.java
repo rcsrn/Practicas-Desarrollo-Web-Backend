@@ -20,6 +20,8 @@ public class SvcProductImageImp implements SvcProductImage {
 
     @Override
     public ApiResponse createProductImage(ProductImageDto in) {
+        System.out.println(in.getImage());
+        System.out.println(in.getProductId());
         return null;
     }
 
