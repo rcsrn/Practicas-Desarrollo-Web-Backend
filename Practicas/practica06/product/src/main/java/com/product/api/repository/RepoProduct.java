@@ -1,5 +1,7 @@
 package com.product.api.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +29,10 @@ public interface RepoProduct extends JpaRepository<Product, Integer>{
 	@Transactional
 	@Query(value = "UPDATE product SET status = 1 WHERE product_id = :product_id", nativeQuery = true)
 	Product activateProduct(@Param("product_id") Integer product_id);
+
+	@Transactional
+	@Query(value = "SELECT * FROM product WHERE category_id = :category_id AND status = 1", nativeQuery = true)
+	List<Product> findByCategory(@Param("category_id") Integer category_id);	
 
 	@Transactional
 	@Query(value = "SELECT * FROM product WHERE product = :product", nativeQuery = true)

@@ -1,6 +1,7 @@
 package com.product.api.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -8,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.dto.ProductDto;
 import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.repository.RepoCategory;
 import com.product.api.repository.RepoProduct;
+import com.product.api.repository.RepoProductDto;
 import com.product.exception.ApiException;
 
 @Service
@@ -23,6 +26,9 @@ public class SvcProductImp implements SvcProduct {
 	@Autowired
 	RepoCategory repoCategory;
 
+	@Autowired
+	RepoProductDto repoProductDto;
+
 	@Override
 	public Product getProduct(String gtin) {
 		Product product = repo.findByGtinAndStatus(gtin); // sustituir null por la llamada al método implementado en el repositorio
@@ -31,6 +37,11 @@ public class SvcProductImp implements SvcProduct {
 			return product;
 		}else
 			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
+	}
+
+	@Override
+	public List<ProductDto> getProducts(Integer category_id) {
+		return repoProductDto.findByCategory(category_id);
 	}
 
 	/*

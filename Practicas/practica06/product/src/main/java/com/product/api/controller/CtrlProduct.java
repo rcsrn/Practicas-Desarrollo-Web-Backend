@@ -1,5 +1,6 @@
 package com.product.api.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.dto.ProductDto;
 import com.product.api.entity.Product;
 import com.product.api.service.SvcProduct;
 import com.product.exception.ApiException;
@@ -35,6 +37,10 @@ public class CtrlProduct {
 		return new ResponseEntity<Product>(svc.getProduct(gtin), HttpStatus.OK);
 	}	
 
+	@GetMapping("/category/{category_id}")
+	public ResponseEntity<List<ProductDto>> getProducts(@PathVariable("category_id") Integer category_id) {
+		return new ResponseEntity<>(svc.getProducts(category_id), HttpStatus.OK);
+	}
 	
 	@PostMapping
 	public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody Product in, BindingResult bindingResult){
