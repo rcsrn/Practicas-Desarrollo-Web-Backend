@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.ApiResponse;
-import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.repository.RepoCategory;
 import com.product.api.repository.RepoProduct;
@@ -44,7 +43,7 @@ public class SvcProductImp implements SvcProduct {
 	public ApiResponse createProduct(Product in) {
 		try {
 			repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock(), in.getCategory_id());		
-		}catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			if (e.getLocalizedMessage().contains("gtin")) {
 				Product productSaved = repo.findByGtin(in.getGtin());
 					if (productSaved.getStatus() == 1) {
