@@ -44,10 +44,12 @@ public class SvcProductImageImp implements SvcProductImage {
         
     }
 
+    @Override
     public List<ProductImage> getProductImages(Integer product_id) {
         return repo.findImagesFromProduct(product_id);
     }
 
+    @Override
     public ApiResponse deleteProductImage(Integer product_image_id) {
         ProductImage imageSaved = repo.findByProductImageId(product_image_id);
         if (imageSaved == null || imageSaved.getStatus() == 0) {
