@@ -58,5 +58,9 @@ public class CtrlProduct {
 		return new ResponseEntity<>(svc.deleteProduct(id), HttpStatus.OK);
 	}
 
-	
+	@PutMapping("/{gtin}/category")
+	public ResponseEntity<ApiResponse> updateProductCategory(@PathVariable("gtin") String gtin) {
+		return new ResponseEntity<ApiResponse>(svc.updateProductCategory(gtin), HttpStatus.OK);
+	}
 }
+

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.repository.RepoCategory;
 import com.product.api.repository.RepoProduct;
@@ -62,28 +63,6 @@ public class SvcProductImp implements SvcProduct {
 		return new ApiResponse("product created");
 		}
 
-	public ApiResponse createProduct2(Product in) {
-		try {
-			repo.createProduct(in.getGtin(), in.getProduct(), in.getPrice(), in.getDescription(), in.getStock(), in.getCategory_id());		
-		}catch (DataIntegrityViolationException e) {
-			if (e.getLocalizedMessage().contains("gtin")) {
-				Product productSaved = repo.findByGtin(in.getGtin());
-					if (productSaved.getStatus() == 1) {
-						throw new ApiException(HttpStatus.BAD_REQUEST, "product gtin already exist");	
-					} else {
-						repo.activateProduct(productSaved.getProduct_id());
-						repo.updateProduct(productSaved.getProduct_id(), in.getGtin(), in.getProduct(), in.getDescription(), in.getPrice(), in.getStock(), in.getCategory_id());
-						return new ApiResponse("product activated");
-					}
-				}
-			if (e.getLocalizedMessage().contains("product"))
-				throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");
-			if (e.contains(SQLIntegrityConstraintViolationException.class))
-				throw new ApiException(HttpStatus.BAD_REQUEST, "category not found");
-		}
-		return new ApiResponse("product updated");
-	}
-
 	@Override
 	public ApiResponse updateProduct(Product in, Integer id) {
 		Integer updated = 0;
@@ -120,4 +99,22 @@ public class SvcProductImp implements SvcProduct {
 		repo.updateProductStock(gtin, product.getStock() - stock);
 		return new ApiResponse("product stock updated");
 	}
+
+	@Override public ApiResponse updateProductCategory(String gtin, Integer category_id) {
+		Product product = repo.findByGtin(gtin);
+		if (product != null) {
+			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
+		}
+
+		Category category = repoCategory.findByCategoryId(category_id);
+
+		if (category != null) {
+			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
+		}
+
+		repo.updateProductCategory(gtin, category_id);
+		return new ApiResponse("product category updated");
+
+	}
+
 }
