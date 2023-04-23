@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.dto.ProductImageDto;
 import com.product.api.entity.ProductImage;
 import com.product.api.service.SvcProductImage;
 import com.product.exception.ApiException;
@@ -34,7 +35,7 @@ public class CtrlProductImage {
     }    
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createProductImage(@Valid @RequestBody ProductImage in, BindingResult bindingResult) {
+    public ResponseEntity<ApiResponse> createProductImage(@Valid @RequestBody ProductImageDto in, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ApiException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
         }

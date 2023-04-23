@@ -4,10 +4,11 @@ import java.util.List;
 
 
 import com.product.api.dto.ApiResponse;
-import com.product.api.entity.ProductImage;
+import com.product.api.dto.ProductImageDto;
+
 
 public interface SvcProductImage {
-    ApiResponse createProductImage(ProductImage in);
+    ApiResponse createProductImage(ProductImageDto in);
 
     List<ProductImage> getProductImages(Integer product_id);
 
