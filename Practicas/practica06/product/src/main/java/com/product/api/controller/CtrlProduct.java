@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.product.api.dto.ApiResponse;
-import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.service.SvcProduct;
 import com.product.exception.ApiException;
@@ -66,8 +65,6 @@ public class CtrlProduct {
 		if (json.size() != 1 || !json.containsKey("category_id")) {
 			throw new ApiException(HttpStatus.BAD_REQUEST, "invalid request");
 		}
-
-
 
 		return new ResponseEntity<ApiResponse>(svc.updateProductCategory(gtin, json.get("category_id")), HttpStatus.OK);
 	}
