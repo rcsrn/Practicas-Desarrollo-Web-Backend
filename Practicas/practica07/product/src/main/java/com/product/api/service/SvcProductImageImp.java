@@ -1,20 +1,28 @@
 package com.product.api.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.ApiResponse;
 import com.product.api.dto.ProductImageDto;
-import com.product.api.entity.Product;
 import com.product.api.entity.ProductImage;
 import com.product.api.repository.RepoProduct;
 import com.product.api.repository.RepoProductImage;
 import com.product.exception.ApiException;
 
 @Service
+@PropertySource("classpath:configuration/path.config")
 public class SvcProductImageImp implements SvcProductImage {
  
     @Autowired
@@ -23,25 +31,30 @@ public class SvcProductImageImp implements SvcProductImage {
     @Autowired
     RepoProduct repoProduct;
 
+    @Value("${product.images.path}")
+    private String path;
+
     @Override
     public ApiResponse createProductImage(ProductImageDto in) {
-        Product product = repoProduct.findByProductId(in.getProductId());
-        if (product == null) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "product image can not be created");
-        }
-        
-        ProductImage productImage = repo.findByProductIdAndImage(in.getProductId(), in.getImage());
-        if (productImage != null) {
-            if (productImage.getStatus() == 0) {
-                repo.activateProductImage(productImage.getProductImageId());
-                return new ApiResponse("product image created");
-            } 
-            throw new ApiException(HttpStatus.BAD_REQUEST, "product image can not be created");
-        }
+        try {
+            File folder = new File("path" + "/" + in.getProductId());
+            if (!folder.exists())
+                folder.mkdirs();
 
-        repo.createProductImage(in.getProductId(), in.getImage());
-        return new ApiResponse("product image created");
-        
+            String file = path + in.getProductId() + "/img" + new Date().getTime() + ".bmp";
+
+            byte[] data = Base64.getMimeDecoder().decode(in.getImage().substring(in.getImage().indexOf(",")+1, in.getImage().length()));
+
+            try (OutputStream stream = new FileOutputStream(file)) { 
+                stream.write(data);
+            }
+
+            in.setImage(in.getProductId() + "/img" + new Date().getTime() + ".bmp");
+            repo.createProductImage(in.getProductId(), file);
+            return new ApiResponse("product image created");
+        } catch (Exception e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "product image can not be created." + e.getLocalizedMessage());
+        }
     }
 
     @Override
