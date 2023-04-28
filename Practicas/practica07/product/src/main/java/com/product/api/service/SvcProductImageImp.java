@@ -37,11 +37,12 @@ public class SvcProductImageImp implements SvcProductImage {
     @Override
     public ApiResponse createProductImage(ProductImageDto in) {
         try {
-            File folder = new File("path" + "/" + in.getProductId());
-            if (!folder.exists())
-                folder.mkdirs();
+            File folder = new File(path + in.getProductId());
+            if (!folder.exists()) {
+                folder.mkdir();    
+            }
 
-            String file = path + in.getProductId() + "/img" + new Date().getTime() + ".bmp";
+            String file = path + in.getProductId() + "/img_" + new Date().getTime() + ".bmp";
 
             byte[] data = Base64.getMimeDecoder().decode(in.getImage().substring(in.getImage().indexOf(",")+1, in.getImage().length()));
 
@@ -49,8 +50,8 @@ public class SvcProductImageImp implements SvcProductImage {
                 stream.write(data);
             }
 
-            in.setImage(in.getProductId() + "/img" + new Date().getTime() + ".bmp");
-            repo.createProductImage(in.getProductId(), file);
+            in.setImage(in.getProductId() + "/img_" + new Date().getTime() + ".bmp");
+            repo.createProductImage(in.getProductId(), in.getImage());
             return new ApiResponse("product image created");
         } catch (Exception e) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "product image can not be created." + e.getLocalizedMessage());
